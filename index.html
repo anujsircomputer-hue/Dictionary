@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Dictionary - All Computer Full Forms</title>
+    <style>
+        /* --- CSS Variables & Reset (Dark Theme) --- */
+        :root {
+            --primary: #00f260; 
+            --secondary: #0575e6; 
+            --bg: #0f0c29; 
+            --card-bg: #24243e; 
+            --text: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* --- Header & Search Styling (Common) --- */
+        header { text-align: center; margin-bottom: 30px; width: 100%; }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .search-container { width: 100%; max-width: 600px; margin: 0 auto 40px auto; }
+        #searchInput {
+            width: 100%;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        /* 2. CORE RESPONSIVENESS: CSS Grid for Cards */
+        .grid-container {
+            display: grid;
+            /* Auto-fit property ensures cards stack on small screens and spread on large ones */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* --- Card Styling --- */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.1); border-color: var(--secondary); }
+        .short-form { font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .full-form { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; color: #fff; }
+        .description { font-size: 0.9rem; color: #ccc; line-height: 1.4; }
+        .no-results { text-align: center; font-size: 1.2rem; color: #888; margin-top: 20px; display: none; width: 100%; }
+        footer { margin-top: 50px; font-size: 0.8rem; color: #666; }
+
+        /* 3. MOBILE TWEAKS: Media Query */
+        @media (max-width: 600px) {
+            /* Small screens par font size chhota kar diya */
+            h1 { font-size: 2rem; }
+            #searchInput { font-size: 1rem; padding: 12px 20px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h1>Anuj Sir Computer Dictionary</h1>
+        <p>Search any computer related full form below</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search here... (e.g., CPU, RAM, PDF)">
+    </div>
+
+    <main class="grid-container" id="cardGrid">
+        </main>
+    
+    <div id="noResults" class="no-results">No full form found matching your search.</div>
+
+    <footer>
+        <p>Created with HTML, CSS & JavaScript</p>
+    </footer>
+
+    <script>
+        // --- Database of 100+ Full Forms (A-Z) ---
+        const data = [
+            // A
+            { short: "AI", full: "Artificial Intelligence", desc: "Simulation of human intelligence by machines." },
+            { short: "ALU", full: "Arithmetic Logic Unit", desc: "Part of CPU that performs arithmetic operations." },
+            { short: "API", full: "Application Programming Interface", desc: "Allows different software to talk to each other." },
+            { short: "ASCII", full: "American Standard Code for Information Interchange", desc: "Character encoding standard." },
+            { short: "ATM", full: "Automated Teller Machine", desc: "Electronic banking outlet." },
+            
+            // B
+            { short: "BASIC", full: "Beginner's All-purpose Symbolic Instruction Code", desc: "Early programming language." },
+            { short: "BIOS", full: "Basic Input Output System", desc: "Firmware used to start the computer." },
+            { short: "BIT", full: "Binary Digit", desc: "Smallest unit of data (0 or 1)." },
+            { short: "BPS", full: "Bits Per Second", desc: "Speed of data transfer." },
+            
+            // C
+            { short: "CAD", full: "Computer Aided Design", desc: "Software for designing and drafting." },
+            { short: "CD", full: "Compact Disc", desc: "Digital optical disc data storage format." },
+            { short: "CLI", full: "Command Line Interface", desc: "Text-based user interface." },
+            { short: "COBOL", full: "Common Business Oriented Language", desc: "Business finance programming language." },
+            { short: "COMPUTER", full: "Common Operating Machine Purposely Used for Technological and Educational Research", desc: "An electronic device for storing and processing data." },
+            { short: "CPU", full: "Central Processing Unit", desc: "The brain of the computer." },
+            { short: "CRT", full: "Cathode Ray Tube", desc: "Technology used in old monitors." },
+            { short: "CSS", full: "Cascading Style Sheets", desc: "Style sheet language for web pages." },
+            
+            // D
+            { short: "DBMS", full: "Database Management System", desc: "Software to manage databases." },
+            { short: "DNS", full: "Domain Name System", desc: "Phonebook of the internet (translates names to IPs)." },
+            { short: "DOS", full: "Disk Operating System", desc: "Early operating system by Microsoft." },
+            { short: "DPI", full: "Dots Per Inch", desc: "Measure of printing or display resolution." },
+            { short: "DVD", full: "Digital Versatile Disc", desc: "Optical disc storage format." },
+            
+            // E
+            { short: "E-MAIL", full: "Electronic Mail", desc: "Method of exchanging messages via internet." },
+            { short: "EXE", full: "Executable", desc: "File extension for a program." },
+            
+            // F
+            { short: "FAT", full: "File Allocation Table", desc: "File system architecture." },
+            { short: "FTP", full: "File Transfer Protocol", desc: "Protocol for transferring files." },
+            { short: "FORTRAN", full: "Formula Translation", desc: "First high-level programming language." },
+            
+            // G
+            { short: "GB", full: "Gigabyte", desc: "Unit of digital information (1024 MB)." },
+            { short: "GIF", full: "Graphics Interchange Format", desc: "Image format supporting animations." },
+            { short: "GPS", full: "Global Positioning System", desc: "Satellite-based navigation system." },
+            { short: "GUI", full: "Graphical User Interface", desc: "Visual interface with icons and windows." },
+            
+            // H
+            { short: "HDD", full: "Hard Disk Drive", desc: "Magnetic storage device." },
+            { short: "HDMI", full: "High-Definition Multimedia Interface", desc: "Connector for video and audio." },
+            { short: "HTML", full: "HyperText Markup Language", desc: "Standard markup language for web." },
+            { short: "HTTP", full: "HyperText Transfer Protocol", desc: "Foundation of data communication on web." },
+            { short: "HTTPS", full: "HyperText Transfer Protocol Secure", desc: "Secure version of HTTP." },
+            
+            // I
+            { short: "I/O", full: "Input / Output", desc: "Communication between system and outside world." },
+            { short: "IC", full: "Integrated Circuit", desc: "Set of electronic circuits on a chip." },
+            { short: "IP", full: "Internet Protocol", desc: "Address identifying a device on a network." },
+            { short: "ISP", full: "Internet Service Provider", desc: "Company providing internet access." },
+            { short: "IT", full: "Information Technology", desc: "Use of computers to process data." },
+            
+            // J
+            { short: "JPEG", full: "Joint Photographic Experts Group", desc: "Common image file format." },
+            { short: "JSON", full: "JavaScript Object Notation", desc: "Lightweight data-interchange format." },
+            { short: "JS", full: "JavaScript", desc: "Programming language for the web." },
+            
+            // K
+            { short: "KB", full: "Kilobyte", desc: "1024 bytes." },
+            { short: "Kbps", full: "Kilobits Per Second", desc: "Data transfer speed unit." },
+            
+            // L
+            { short: "LAN", full: "Local Area Network", desc: "Network covering a small area." },
+            { short: "LCD", full: "Liquid Crystal Display", desc: "Flat-panel display technology." },
+            { short: "LED", full: "Light Emitting Diode", desc: "Semiconductor light source." },
+            
+            // M
+            { short: "MAC", full: "Media Access Control", desc: "Hardware address of a network card." },
+            { short: "MAN", full: "Metropolitan Area Network", desc: "Network larger than LAN but smaller than WAN." },
+            { short: "MB", full: "Megabyte", desc: "1024 Kilobytes." },
+            { short: "MP3", full: "MPEG Audio Layer III", desc: "Audio coding format." },
+            { short: "MP4", full: "MPEG-4 Part 14", desc: "Digital multimedia format." },
+            
+            // N
+            { short: "NIC", full: "Network Interface Card", desc: "Hardware to connect computer to network." },
+            { short: "NOS", full: "Network Operating System", desc: "OS for network devices." },
+            { short: "NTFS", full: "New Technology File System", desc: "File system used by Windows." },
+            
+            // O
+            { short: "OCR", full: "Optical Character Recognition", desc: "Converting image text to machine text." },
+            { short: "OS", full: "Operating System", desc: "System software managing hardware." },
+            { short: "OSS", full: "Open Source Software", desc: "Software with source code available to public." },
+            
+            // P
+            { short: "PAN", full: "Personal Area Network", desc: "Network for personal devices (e.g., Bluetooth)." },
+            { short: "PC", full: "Personal Computer", desc: "Multi-purpose computer for individual use." },
+            { short: "PDF", full: "Portable Document Format", desc: "Document format independent of software." },
+            { short: "PHP", full: "Hypertext Preprocessor", desc: "Server-side scripting language." },
+            { short: "PNG", full: "Portable Network Graphics", desc: "Image format with transparency." },
+            { short: "PPP", full: "Point-to-Point Protocol", desc: "Data link protocol." },
+            
+            // R
+            { short: "RAM", full: "Random Access Memory", desc: "Volatile working memory." },
+            { short: "ROM", full: "Read Only Memory", desc: "Non-volatile memory." },
+            
+            // S
+            { short: "SATA", full: "Serial Advanced Technology Attachment", desc: "Interface for storage devices." },
+            { short: "SIM", full: "Subscriber Identity Module", desc: "Smart card in phones." },
+            { short: "SMS", full: "Short Message Service", desc: "Text messaging service." },
+            { short: "SQL", full: "Structured Query Language", desc: "Language for managing databases." },
+            { short: "SSD", full: "Solid State Drive", desc: "Faster storage than HDD." },
+            { short: "SSL", full: "Secure Sockets Layer", desc: "Security technology for encrypted link." },
+            
+            // T
+            { short: "TB", full: "Terabyte", desc: "1024 Gigabytes." },
+            { short: "TCP/IP", full: "Transmission Control Protocol/Internet Protocol", desc: "Communication protocols for internet." },
+            
+            // U
+            { short: "UI", full: "User Interface", desc: "Space where interaction occurs." },
+            { short: "UPS", full: "Uninterruptible Power Supply", desc: "Battery backup for computers." },
+            { short: "URL", full: "Uniform Resource Locator", desc: "Web address." },
+            { short: "USB", full: "Universal Serial Bus", desc: "Standard for cables and connectors." },
+            
+            // V
+            { short: "VGA", full: "Video Graphics Array", desc: "Video display standard." },
+            { short: "VIRUS", full: "Vital Information Resources Under Siege", desc: "Malicious software." },
+            { short: "VPN", full: "Virtual Private Network", desc: "Secure tunnel across the internet." },
+            
+            // W
+            { short: "WAN", full: "Wide Area Network", desc: "Network covering broad area." },
+            { short: "Wi-Fi", full: "Wireless Fidelity", desc: "Wireless networking technology." },
+            { short: "WLAN", full: "Wireless Local Area Network", desc: "Local network using wireless technology." },
+            { short: "WWW", full: "World Wide Web", desc: "Information system of documents on internet." },
+            
+            // X, Y, Z
+            { short: "XML", full: "Extensible Markup Language", desc: "Markup language for storing data." },
+            { short: "ZIP", full: "Zone Improvement Plan", desc: "Archive file format (also postal code system)." }
+        ];
+
+        const grid = document.getElementById('cardGrid');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+
+        // Function to display cards
+        function displayCards(items) {
+            grid.innerHTML = ''; 
+            
+            if(items.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            } else {
+                noResults.style.display = 'none';
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <div class="short-form">${item.short}</div>
+                    <div class="full-form">${item.full}</div>
+                    <div class="description">${item.desc}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Event Listener for Search
+        searchInput.addEventListener('keyup', (e) => {
+            const searchString = e.target.value.toLowerCase();
+            
+            const filteredData = data.filter(item => {
+                return (
+                    item.short.toLowerCase().includes(searchString) || 
+                    item.full.toLowerCase().includes(searchString)
+                );
+            });
+            
+            displayCards(filteredData);
+        });
+
+        // Initial Load
+        displayCards(data);
+
+    </script>
+</body>
+</html>
